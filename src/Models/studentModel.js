@@ -39,6 +39,15 @@ const certificationSchema = new mongoose.Schema({
   credentialURL: { type: String }
 });
 
+const placementHistorySchema = new mongoose.Schema({
+  jobId: { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true },
+  companyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Company', required: true },
+  offerDate: { type: Date, required: true },
+  package: { type: Number, required: true },
+  jobType: { type: String, enum: ['full-time', 'internship'], required: true },
+  status: { type: String, enum: ['accepted', 'rejected', 'pending'], default: 'pending' }
+});
+
 const studentSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -104,19 +113,23 @@ const studentSchema = new mongoose.Schema({
   projects: [projectSchema],
   workExperience: [workExperienceSchema],
   certifications: [certificationSchema],
+  placementHistory: [placementHistorySchema], // New field for placement tracking
+  appliedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' }], // Track applied job IDs
   eligibilityStatus: { type: Boolean, default: true },
   blacklisted: { type: Boolean, default: false },
   placementStatus: {
     type: String,
     enum: ['placed', 'not_placed', 'internship_only'],
     default: 'not_placed'
-  }
+  },
+  resumeUpdatedAt: { type: Date, default: Date.now } // Track last resume update
 }, { timestamps: true });
 
 // Automatically update resume lastUpdated field
 studentSchema.pre('save', function (next) {
   if (this.isModified('resume.url')) {
     this.resume.lastUpdated = Date.now();
+    this.resumeUpdatedAt = Date.now();
   }
   next();
 });

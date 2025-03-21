@@ -21,6 +21,26 @@ const selectionProcessSchema = new mongoose.Schema({
   }
 });
 
+const interviewRoundSchema = new mongoose.Schema({
+  roundNumber: {
+    type: Number,
+    required: true,
+    min: 1
+  },
+  type: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  description: {
+    type: String,
+    trim: true
+  },
+  scheduledDate: {
+    type: Date
+  }
+});
+
 const packageSchema = new mongoose.Schema({
   currency: {
     type: String,
@@ -139,6 +159,19 @@ const jobPostingSchema = new mongoose.Schema({
   selectionProcess: {
     type: [selectionProcessSchema],
     default: []
+  },
+  interviewRounds: {
+    type: [interviewRoundSchema],
+    default: []
+  },
+  hiredStudents: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Student',
+    default: []
+  },
+  viewCount: {
+    type: Number,
+    default: 0
   },
   documents: {
     type: [String],

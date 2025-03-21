@@ -42,6 +42,19 @@ const recruiterSchema = new mongoose.Schema({
       message: 'Invalid email domain format'
     }
   },
+  alternateEmail: {
+    type: String,
+    lowercase: true,
+    trim: true
+  },
+  linkedInProfile: {
+    type: String,
+    trim: true
+  },
+  verificationDocuments: {
+    type: [String], // Array of document URLs or file references
+    default: []
+  },
   isVerified: {
     type: Boolean,
     default: false

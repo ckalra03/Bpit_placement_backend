@@ -18,6 +18,48 @@ const visitHistorySchema = new mongoose.Schema({
   }
 });
 
+const pastRecruitmentDriveSchema = new mongoose.Schema({
+  jobId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Job',
+    required: true
+  },
+  year: {
+    type: Number,
+    required: true
+  },
+  totalHired: {
+    type: Number,
+    default: 0
+  },
+  avgPackage: {
+    type: Number,
+    default: 0
+  }
+});
+
+const recruitmentHistorySchema = new mongoose.Schema({
+  studentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+    required: true
+  },
+  jobId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Job',
+    required: true
+  },
+  joiningDate: {
+    type: Date,
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['Joined', 'Declined', 'Pending'],
+    default: 'Pending'
+  }
+});
+
 const companySchema = new mongoose.Schema({
   name: {
     type: String,
@@ -121,7 +163,9 @@ const companySchema = new mongoose.Schema({
     max: 5,
     default: 3
   },
-  visitHistory: [visitHistorySchema]
+  visitHistory: [visitHistorySchema],
+  pastRecruitmentDrives: [pastRecruitmentDriveSchema],
+  recruitmentHistory: [recruitmentHistorySchema]
 }, {
   timestamps: true
 });

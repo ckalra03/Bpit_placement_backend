@@ -48,12 +48,26 @@ const companyWiseSchema = new mongoose.Schema({
   roles: { type: [String] }
 });
 
+const topHiringCompanySchema = new mongoose.Schema({
+  companyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Company', required: true },
+  hiredCount: { type: Number, default: 0 }
+});
+
 const analyticsSchema = new mongoose.Schema({
   academicYear: { type: String, required: true, unique: true, trim: true },
   statistics: { type: statisticsSchema, default: () => ({}) },
   departmentWise: [departmentWiseSchema],
   monthlyTrends: [monthlyTrendSchema],
   companyWise: [companyWiseSchema],
+  topHiringCompanies: [topHiringCompanySchema],
+  averageSalaryPerDepartment: { type: Map, of: Number, default: {} },
+  studentSuccessRate: { 
+    type: Number, 
+    default: function () {
+      return this.statistics.totalStudents ? 
+        (this.statistics.placedStudents / this.statistics.totalStudents) * 100 : 0;
+    } 
+  },
   lastUpdated: { type: Date, default: Date.now }
 }, { timestamps: true });
 

@@ -72,7 +72,11 @@ const eventSchema = new mongoose.Schema({
     enum: ['upcoming', 'ongoing', 'completed', 'cancelled'],
     default: 'upcoming'
   },
-  attendance: [attendanceSchema]
+  attendance: [attendanceSchema],
+  reminderSent: {
+    type: Boolean,
+    default: false
+  }
 }, {
   timestamps: true
 });
