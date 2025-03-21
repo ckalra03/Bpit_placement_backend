@@ -12,27 +12,20 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: 8,
-    select: false
+    minlength: 8
   },
   roles: {
-    type: [String], // Supports multiple roles
+    type: String, // Supports multiple roles
     enum: ['student', 'placement_officer', 'recruiter', 'admin'],
     required: [true, 'Role is required']
   },
-  firstName: {
+  name: {
     type: String,
-    required: [true, 'First name is required'],
-    trim: true
-  },
-  lastName: {
-    type: String,
-    required: [true, 'Last name is required'],
-    trim: true
+    required: [true, 'Name is required'],
   },
   profilePicture: {
     type: String,
-    default: 'default.jpg'
+    default: 'https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png'
   },
   contactNumber: {
     type: String,

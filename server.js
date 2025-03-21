@@ -1,28 +1,20 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const connectDB = require('./DB/connectDB');
+const express = require("express");
+const dotenv = require("dotenv");
+const connectDB = require("./src/Config/db"); // Import the DB connection function
+const authRoutes = require("./src/Routes/authRoutes");
 
-dotenv.config();
-connectDB(); // Connect to MongoDB
+dotenv.config(); // Load environment variables
 
 const app = express();
-app.use(express.json());
-app.use(cors()); // Enable CORS for frontend communication
 
-// Import Routes
-const jobRoutes = require('./routes/jobRoutes');
-const applicationRoutes = require('./routes/applicationRoutes');
-const notificationRoutes = require('./routes/notificationRoutes');
+// Connect to Database
+connectDB();
 
-// Register Routes
-app.use('/api/jobs', jobRoutes);
-app.use('/api/applications', applicationRoutes);
-app.use('/api/notifications', notificationRoutes);
+// Middleware
+app.use(express.json()); // Parse JSON request bodies
 
-app.get('/', (req, res) => {
-  res.send('API is running...');
-});
+// Routes
+app.use("/api/auth", authRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;
