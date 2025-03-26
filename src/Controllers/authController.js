@@ -39,7 +39,7 @@ exports.login = async (req, res) => {
     
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    
+
     if (!isMatch) {
         return res.status(400).json({ message: "Invalid password" });
     }
@@ -48,6 +48,14 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ userId: user._id, roles: user.roles }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
+
+      // Set cookie
+      res.cookie("token", token, {
+        httpOnly: true, // Prevent access from JavaScript (more secure)
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+        sameSite: "Strict", // Protect against CSRF attacks
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
 
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
@@ -66,4 +74,11 @@ exports.getMe = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
+  
 };
+//Logout 
+
+exports.logout = (req, res) => {
+    res.clearCookie("token"); // Remove JWT token from cookies
+    res.status(200).json({ message: "Logged out successfully" });
+  };

@@ -97,7 +97,7 @@ const jobPostingSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Recruiter',
+    ref: 'User',
     required: true
   },
   title: {
