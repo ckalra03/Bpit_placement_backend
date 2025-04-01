@@ -1,13 +1,13 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors"); // Import cors
 const cookieParser = require("cookie-parser");
-const connectDB = require("./src/Config/db"); // Import the DB connection function
+const connectDB = require("./src/Config/db");
 const authRoutes = require("./src/Routes/authRoutes");
 const jobRoutes = require("./src/Routes/jobRoutes");
-const profileRoutes = require("./src/Routes/profileRoutes")
+const profileRoutes = require("./src/Routes/profileRoutes");
 
-
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const app = express();
 
@@ -15,18 +15,21 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(express.json()); // Parse JSON request bodies
-app.use(cookieParser()); // Enable cookie parsing
+app.use(express.json());
+app.use(cookieParser());
+
+// CORS Middleware
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow requests from frontend
+    credentials: true, // Allow cookies & authentication headers
+  })
+);
 
 // Routes
 app.use("/api/auth", authRoutes);
-// Use job routes
 app.use("/api/jobs", jobRoutes);
-
-// Routes
 app.use("/api/profile", profileRoutes);
-
-
 
 // Start Server
 const PORT = process.env.PORT || 5000;

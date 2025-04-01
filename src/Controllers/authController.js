@@ -1,4 +1,7 @@
 const User = require("../Models/userModel");
+const Student = require("../Models/studentModel");
+const Recruiter = require("../Models/recruiterModel");
+const PlacementOfficer = require("../Models/placementOfficerModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
@@ -64,18 +67,37 @@ exports.login = async (req, res) => {
 };
 
 // Get logged-in user details
+
 exports.getMe = async (req, res) => {
   try {
+    // Fetch user details without password
     const user = await User.findById(req.user.userId).select("-password");
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(user);
+
+    let additionalDetails = null;
+
+    // Fetch additional details based on roles
+    if (user.roles === "student") {
+      additionalDetails = await Student.findOne({ userId: user._id });
+    } else if (user.roles === "recruiter") {
+      additionalDetails = await Recruiter.findOne({ userId : user._id });
+    } else if (user.roles === "placement_officer") {
+      additionalDetails = await PlacementOfficer.findOne({ userId : user._id });
+    }
+
+    // Return both user details and roles-specific details
+    res.status(200).json({
+      user,
+      additionalDetails, // This could be student, recruiter, or placement officer details
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
-  
 };
+
 //Logout 
 
 exports.logout = (req, res) => {

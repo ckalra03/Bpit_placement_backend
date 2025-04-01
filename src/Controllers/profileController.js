@@ -36,7 +36,7 @@ exports.getProfileStatus = async (req, res) => {
     profileComplete = !!roleModel; // Convert to boolean
 
     // Get basic user info
-    const user = await User.findById(userId).select("name email");
+    const user = await User.findById(userId).select("name email isVerified");
 
     res.status(200).json({ 
       profileComplete,
@@ -44,6 +44,8 @@ exports.getProfileStatus = async (req, res) => {
       user: {
         name: user.name,
         email: user.email,
+        isVerified : user.isVerified,
+        
         id: userId
       }
     });
