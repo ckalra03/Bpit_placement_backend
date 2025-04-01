@@ -82,3 +82,4 @@ exports.logout = (req, res) => {
     res.clearCookie("token"); // Remove JWT token from cookies
     res.status(200).json({ message: "Logged out successfully" });
   };
+

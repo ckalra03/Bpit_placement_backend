@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./src/Config/db"); // Import the DB connection function
 const authRoutes = require("./src/Routes/authRoutes");
 const jobRoutes = require("./src/Routes/jobRoutes");
+const profileRoutes = require("./src/Routes/profileRoutes")
 
 
 dotenv.config(); // Load environment variables
@@ -22,6 +23,8 @@ app.use("/api/auth", authRoutes);
 // Use job routes
 app.use("/api/jobs", jobRoutes);
 
+// Routes
+app.use("/api/profile", profileRoutes);
 
 
 

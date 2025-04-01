@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const User = require('../Models/userModel');
 
 const recruiterSchema = new mongoose.Schema({
   userId: {

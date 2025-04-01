@@ -4,6 +4,7 @@ const { authMiddleware } = require("../Middleware/authMiddleware");
 
 
 
+
 const router = express.Router();
 
 router.post("/register", register);
