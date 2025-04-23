@@ -1,4 +1,3 @@
-// profileController.js
 const User = require("../Models/userModel");
 const Student = require("../Models/studentModel");
 const Recruiter = require("../Models/recruiterModel");
